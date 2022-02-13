@@ -63,8 +63,7 @@ mint addr = do
     case Map.keys utxos of
         []       -> Contract.logError @String "no utxo found"
         oref : _ -> do
-            let tn      = ""
-            let val     = Value.singleton (curSymbol oref) tn 1
+            let val     = Value.singleton (curSymbol oref) (TokenName emptyByteString) 1
                 lookups = Constraints.mintingPolicy (policy oref) <> Constraints.unspentOutputs utxos
                 tx      = Constraints.mustMintValue val <> Constraints.mustSpendPubKeyOutput oref
             ledgerTx <- submitTxConstraintsWith @Void lookups tx
